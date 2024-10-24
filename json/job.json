@@ -1,0 +1,69 @@
+[{
+		"nom": "Astromancien",
+		"icon": "astrologian.png"
+	},
+	{
+		"nom": "Mage blanc",
+		"icon": "whitemage.png"
+	},
+	{
+		"nom": "Érudit",
+		"icon": "scholar.png"
+	},
+	{
+		"nom": "Invocateur",
+		"icon": "summoner.png"
+	},
+	{
+		"nom": "Mage noir",
+		"icon": "blackmage.png"
+	},
+	{
+		"nom": "Mage rouge",
+		"icon": "redmage.png"
+	},
+	{
+		"nom": "Barde",
+		"icon": "bard.png"
+	},
+	{
+		"nom": "Machiniste",
+		"icon": "machinist.png"
+	},
+	{
+		"nom": "Danseur",
+		"icon": "dancer.png"
+	},
+	{
+		"nom": "Samourai",
+		"icon": "samurai.png"
+	},
+	{
+		"nom": "Moine",
+		"icon": "monk.png"
+	},
+	{
+		"nom": "Chevalier dragon",
+		"icon": "dragoon.png"
+	},
+	{
+		"nom": "Ninja",
+		"icon": "ninja.png"
+	},
+	{
+		"nom": "Pistosabreur",
+		"icon": "gunbreaker.png"
+	},
+	{
+		"nom": "Paladin",
+		"icon": "paladin.png"
+	},
+	{
+		"nom": "Chevalier noir",
+		"icon": "darkknight.png"
+	},
+	{
+		"nom": "Guerrier",
+		"icon": "warrior.png"
+	}
+]

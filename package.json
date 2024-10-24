@@ -1,0 +1,33 @@
+{
+  "name": "discordbot_gabranth",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^1.4.0",
+    "@discordjs/rest": "^1.5.0",
+    "@octokit/core": "^4.2.0",
+    "@xivapi/nodestone": "^0.2.6",
+    "axios": "^1.6.7",
+    "canvas": "^2.11.2",
+    "cheerio": "^1.0.0-rc.12",
+    "discord-api-types": "^0.37.40",
+    "discord-buttons": "^4.0.0",
+    "octokit": "^4.0.2",
+    "package.json": "^2.0.1",
+    "xivapi-js": "^0.3.0"
+  },
+  "devDependencies": {
+    "@xivapi/js": "^0.4.3",
+    "discord.js": "^14.9.0",
+    "dotenv": "^16.0.1",
+    "node-schedule": "^2.1.0"
+  }
+}
