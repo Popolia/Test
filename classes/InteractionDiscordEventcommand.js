@@ -1,7 +1,7 @@
 import { PermissionFlagsBits } from 'discord.js';
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder } from 'discord.js';
-import xivlodestone from '../classes/LodestoneXIVAPI.js';
-import interactJSON from '../classes/InteractionJSON.js'; // Assurez-vous que ce chemin est correct et que InteractionJSON a une exportation par défaut
+import LodestoneXIVAPI from './LodestoneXIVAPI.js';
+import interactJSON from '../classes/InteractionJSON.js'; // Assurez-vous que ce chemin est correct
 import interactdiscord from '../classes/InteractionDiscord.js';
 import interactdiscordimage from '../classes/InteractionImageDiscord.js';
 
@@ -89,7 +89,7 @@ class ActionModalEvenement {
 
     // Traitement des montures d'événements
     async eventmount(interaction, lieu, extension, tableauuser) {
-        const xivlod = new xivlodestone();
+        const xivlod = new LodestoneXIVAPI(); // Correction pour instancier LodestoneXIVAPI
         const actionJSON = new interactJSON();
         const montureBDD = await actionJSON.ParseJSON('liste_monture copy');
         const listIDJson = await actionJSON.Chargementuserlist();
@@ -143,8 +143,11 @@ class ActionModalEvenement {
 
     // Création des embeds
     async creerEmbeds(listeFinale, lieu, extension, listemonturenomFR) {
-        const actionDiscord = new interactdiscord();
-        const ActionDiscordimage = new interactdiscordimage();
+        const InteractDiscord = require('../classes/InteractionDiscord.js'); // ou import selon le type
+        const InteractDiscordImage = require('../classes/InteractionDiscordImage.js'); // ou import selon le type
+    
+        const actionDiscord = new InteractDiscord();
+        const actionDiscordImage = new InteractDiscordImage();
 
         const embeds = await Promise.all(listeFinale.map(async (desc, index) => {
             const title = lieu === 'Defis'
@@ -152,7 +155,7 @@ class ActionModalEvenement {
                 : `<:raid:1020685761600827502> Instance ${index + 1}\n<:Montures1:1156896278660259851> ${listemonturenomFR[index]}`;
 
             const couleur = actionDiscord.CouleurEmbed();
-            const image = await ActionDiscordimage.lienimageinstance(`Instance ${index + 1}`, extension, lieu);
+            const image = await actionDiscordImage.lienimageinstance(`Instance ${index + 1}`, extension, lieu);
 
             return new EmbedBuilder()
                 .setColor(couleur)

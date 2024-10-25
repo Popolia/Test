@@ -1,123 +1,127 @@
-const fs = require('fs')
-const githubAPI = require ('../classes/GithubAPI');
+export default interactJSON; // ou remplace `interactJSON` par l'objet principal exporté
+const fs = require('fs');
+const GithubAPI = require('../classes/GithubAPI');
 
 class ActionJSON {
-
-    async Chargementuserlist(){
-        let membres = fs.readFileSync('./json/membresV2.json', 'utf-8')
-        console.log(membres)
-        let membresDejaInscrit = JSON.parse(membres)
-        return membresDejaInscrit
+    async Chargementuserlist() {
+        try {
+            const membres = fs.readFileSync('./json/membresV2.json', 'utf-8');
+            console.log(membres);
+            const membresDejaInscrit = JSON.parse(membres);
+            return membresDejaInscrit;
+        } catch (error) {
+            console.error("Erreur lors du chargement de membresV2.json :", error);
+            return [];
+        }
     }
 
-    async VerifUtilisateur(membresDejaInscrit, discordidPersonnage, lodestoneidPersonnage) { //Vérification de l'utilisateur
-        let listlodIDJson = membresDejaInscrit.map((lodid) => lodid.lodestoneid)
-        let listdisIDJson = membresDejaInscrit.map((disid) => disid.discordid)
-        console.log("liste id lodestone")
-        console.log(listlodIDJson)
-        console.log("liste id discord")
-        console.log(listdisIDJson)
-        let verif = false
-        if(!listlodIDJson.includes(lodestoneidPersonnage) && !listdisIDJson.includes(discordidPersonnage)) {
-            //return await interaction.reply({content: 'Le personnage est déjà lié a un membre du serveur', ephemeral: true})
-            console.log("utilisateur non existant")
-            return verif = true
-            
+    async VerifUtilisateur(membresDejaInscrit, discordidPersonnage, lodestoneidPersonnage) {
+        const listlodIDJson = membresDejaInscrit.map((lodid) => lodid.lodestoneid);
+        const listdisIDJson = membresDejaInscrit.map((disid) => disid.discordid);
+        console.log("liste id lodestone", listlodIDJson);
+        console.log("liste id discord", listdisIDJson);
+
+        if (!listlodIDJson.includes(lodestoneidPersonnage) && !listdisIDJson.includes(discordidPersonnage)) {
+            console.log("utilisateur non existant");
+            return true;
         } else {
-           /* console.log("personnage non existant")
-            if(listdisIDJson.includes(discordidPersonnage)) {
-                //return await interaction.reply({content: 'le profil discord a déjà un personnage', ephemeral: true})
-                return verif = false
-            } else {*/
-                console.log("utilisateur existant")
-                return verif = false
-            }
-        
-        //return [verif = false
+            console.log("utilisateur existant");
+            return false;
+        }
     }
 
-    async VerifUtilisateurdiscord(membresDejaInscrit, discordid) { //Vérification de l'utilisateur
-        let listdisIDJson = membresDejaInscrit.map((disid) => disid.discordid)
-        console.log("liste id discord")
-        console.log(listdisIDJson)
-        let verif = false
-        if(listdisIDJson.includes(discordidPersonnage)) {
-            console.log("utilisateur existant")
-            return verif = true
-            
+    async VerifUtilisateurdiscord(membresDejaInscrit, discordid) {
+        const listdisIDJson = membresDejaInscrit.map((disid) => disid.discordid);
+        console.log("liste id discord", listdisIDJson);
+
+        if (listdisIDJson.includes(discordid)) {
+            console.log("utilisateur existant");
+            return true;
         } else {
-                console.log("utilisateur non existant")
-                return verif = false
-            }
+            console.log("utilisateur non existant");
+            return false;
+        }
     }
 
-    async LienUtilisateur(membresDejaInscrit, discordidPersonnage, lodestoneidPersonnage, nom) { //ajout du membre dans le json membre     
-            let nouvmembre = {
-              lodestoneid: lodestoneidPersonnage,
-              discordid: discordidPersonnage,
-              nom
-            }
-            membresDejaInscrit.push(nouvmembre)
-            console.log(membresDejaInscrit)
-            let membresajout = JSON.stringify(membresDejaInscrit, null, 2)
-            fs.writeFileSync('./json/membres.json', membresajout)
-            return membresajout
+    async LienUtilisateur(membresDejaInscrit, discordidPersonnage, lodestoneidPersonnage, nom) {
+        const nouveauMembre = { lodestoneid: lodestoneidPersonnage, discordid: discordidPersonnage, nom };
+        membresDejaInscrit.push(nouveauMembre);
+        console.log(membresDejaInscrit);
+
+        const membresAjout = JSON.stringify(membresDejaInscrit, null, 2);
+        try {
+            fs.writeFileSync('./json/membres.json', membresAjout);
+        } catch (error) {
+            console.error("Erreur lors de l'écriture dans membres.json :", error);
+        }
+        return membresAjout;
     }
 
-    async SuppressionUtilisateur(idmembre, nom) { //ajout du membre dans le json membre     
+    async SuppressionUtilisateur(idmembre, nom) {
+        try {
+            const membres = fs.readFileSync('./json/membres.json', 'utf-8');
+            const membresDejaInscrit = JSON.parse(membres);
 
-        let membres = fs.readFileSync('./json/membres.json', 'utf-8')
-        console.log(membres)
-        let membresDejaInscrit = JSON.parse(membres)
-        //let listemembre = membresDejaInscrit.discordid.map
-        for (let index = 0; index < membresDejaInscrit.length; index++) {
-            console.log(membresDejaInscrit[index].discordid)
-            if(idmembre === membresDejaInscrit[index].discordid)
-        {
-            const indexElementASupprimer = membresDejaInscrit.findIndex((membre) => membre.discordid === idmembre) //le === tu met la condition que t'as besoin, faut que ça cible celui que tu veux jeter
-            membresDejaInscrit.splice(indexElementASupprimer, 1)
-            console.log(membresDejaInscrit) // l'élément a été supprimer normalement
-            let membresajout = JSON.stringify(membresDejaInscrit, null, 2)
-            fs.writeFileSync('./json/membres.json', membresajout)
-            const actionGithub = new githubAPI()
-            let octokit = await actionGithub.ConnexionGithub()
-            let sha = await actionGithub.Recupfichier(octokit, "json/membres.json")
-            actionGithub.Modiffichier(octokit, membresajout, sha, "json/membres.json", "membre retiré: " + nom)
-        }
-        else{
-            console.log('Membre inexistant dans base de données : ' + nom)
-        } 
-        }
-        
-        }
+            const indexElementASupprimer = membresDejaInscrit.findIndex((membre) => membre.discordid === idmembre);
+            if (indexElementASupprimer !== -1) {
+                membresDejaInscrit.splice(indexElementASupprimer, 1);
+                console.log("Membre supprimé:", membresDejaInscrit);
 
-    async ParseJSON(nomfichier){
+                const membresAjout = JSON.stringify(membresDejaInscrit, null, 2);
+                fs.writeFileSync('./json/membres.json', membresAjout);
 
-    let json = fs.readFileSync('./json/' + nomfichier + '.json', 'utf-8')
-    console.log(json)
-    let jsonparse = JSON.parse(json)
-    console.log(jsonparse)
-    return jsonparse
+                const actionGithub = new GithubAPI();
+                const octokit = await actionGithub.ConnexionGithub();
+                const sha = await actionGithub.Recupfichier(octokit, "json/membres.json");
+                actionGithub.Modiffichier(octokit, membresAjout, sha, "json/membres.json", "Membre retiré : " + nom);
+            } else {
+                console.log('Membre inexistant dans la base de données :', nom);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la suppression de l'utilisateur :", error);
+        }
     }
 
-    async RecupIDLodestone(iddiscord){
-        let membres = fs.readFileSync('./json/membres.json', 'utf-8')
-        console.log(membres)
-        let listIDJson = JSON.parse(membres)
-        console.log("liste json")
-        console.log(listIDJson)
-        let tableauid = [[],[]]
-        let x = 0
-        listIDJson.forEach((listID) => {        
-            if(iddiscord.includes(listID.discordid)) {
-                    tableauid[x][0] = listID.discordid
-                    tableauid[x][1] = listID.lodestoneid
-                    x++
-            }
-            console.log(tableauid)
-        })
-        return tableauid
+    async ParseJSON(nomfichier) {
+        try {
+            const json = fs.readFileSync(`./json/${nomfichier}.json`, 'utf-8');
+            console.log(json);
+            return JSON.parse(json);
+        } catch (error) {
+            console.error(`Erreur lors de la lecture de ${nomfichier}.json :`, error);
+            return null;
+        }
+    }
+
+    async RecupIDLodestone(iddiscord) {
+        try {
+            const membres = fs.readFileSync('./json/membres.json', 'utf-8');
+            const listIDJson = JSON.parse(membres);
+
+            const tableauid = listIDJson
+                .filter((listID) => iddiscord.includes(listID.discordid))
+                .map((listID) => [listID.discordid, listID.lodestoneid]);
+            console.log("tableau d'ID:", tableauid);
+
+            return tableauid;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des ID Lodestone :", error);
+            return [];
+
+            // InteractionJSON.js
+
+// Définir l'objet ou la fonction que vous souhaitez exporter
+const interactJSON = {
+    // Ajoutez ici les propriétés ou méthodes que vous voulez
+    exampleMethod: function() {
+        console.log('Ceci est une méthode d\'exemple.');
+    }
+
+
+// Exporter l'objet ou la fonction
+        }
     }
 }
+};
 
-module.exports = ActionJSON
+module.exports = ActionJSON;

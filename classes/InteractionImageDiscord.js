@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const { ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const interactJSON = require ('../classes/InteractionJSON');
 
-class ActionDiscordimage {
+class InteractDiscordImage {
 
     async lienimageinstance(nom, extension, lieu) { //Charge une image d'instance depuis le serveur discord
         nom = nom + "\n"
@@ -119,4 +119,4 @@ class ActionDiscordimage {
 
 }
 
-module.exports = ActionDiscordimage
+export default InteractDiscordImage;

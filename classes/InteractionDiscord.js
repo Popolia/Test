@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const { ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-
-class ActionDiscord {
+class InteractDiscord {
 
     AjoutRole(member, role) { //Ajout d'un rôle à l'utilisateur
         member.roles.add(role);
@@ -28,4 +27,4 @@ class ActionDiscord {
 
 }
 
-module.exports = ActionDiscord
+export default InteractDiscord; // Exportation par défaut

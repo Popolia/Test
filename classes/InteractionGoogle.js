@@ -2,7 +2,7 @@ const fs = require('fs')
 const githubAPI = require ('./GithubAPI');
 const { timeStamp } = require('console');
 
-class ActionGoogle {
+class InteractionGoogle {
 
     async parselistemembre(listemembre) { //ajout des membre dans le json membres pour google sheet, listemembre = liste du serveur discord  
             let membrelist = []
@@ -115,4 +115,4 @@ class ActionGoogle {
     }
 }
 
-module.exports = ActionGoogle
+export default InteractionGoogle; // Exportation par défaut
